@@ -35,11 +35,6 @@ def getallusers():
     return {"result": result}
 
 
-@app.get("/Test")
-def test(Username: str, Password: str, Company: str):
-    return {"Username": Username, "Password": Password, "Company": Company}
-
-
 @app.get("/UpdateApp")
 def update():
     sp = subprocess.Popen("git pull", shell=True, stdout=subprocess.PIPE)
