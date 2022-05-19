@@ -13,21 +13,7 @@ def StartUp():
 
 
 app = FastAPI()
-
-
-@app.get("/BMSUserSignIn")
-def read_item_signin(username: str, password: str):
-    connection = StartUp()
-    result = database.validate_user(connection, username, password)
-    return {"result": result}
-
-
-@app.get("/BMSUserSignUp")
-def read_item_signup(username: str, password: str, company: str):
-    connection = StartUp()
-    print(database.add_user(connection, username, password, company))
-    return {"username": username, "password": password, "company": company, "status": "success"}
-
+StartUp()
 
 @app.get("/GetAllUsers")
 def getallusers():
@@ -43,10 +29,28 @@ def update():
     subprocess_return = subprocess_return.decode('utf-8')
     return subprocess_return
 
+
+@app.get("/DashboardSignIn")
+def dashboardsignin(username: str, password: str):
+    connection = StartUp()
+    result = database.dashboard_signin(connection, username, password)
+    return {"result": result}
+
+
+@app.get("/RegisterUser")
+def registeruser(company: str, uuid: str, password: str, macid: str):
+    connection = StartUp()
+    result = database.register_user(
+        connection, company, uuid, password, macid)
+    return {"result": result}
+
+
 @app.get("/")
 @app.get("/Test")
 def test():
     return {"welcome": "working"}
 
+
 if "__main__" == __name__:
-    uvicorn.run("app:app",host='0.0.0.0', port=8000, reload=True, debug=True, workers=3)
+    uvicorn.run("app:app", host='0.0.0.0', port=8000,
+                reload=True, debug=True, workers=3)
