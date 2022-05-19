@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
 import database
-import sys
-import os
 import subprocess
 
 
@@ -13,7 +11,7 @@ def StartUp():
 
 
 app = FastAPI()
-StartUp()
+
 
 @app.get("/GetAllUsers")
 def getallusers():
@@ -45,10 +43,32 @@ def registeruser(company: str, uuid: str, password: str, macid: str):
     return {"result": result}
 
 
+@app.get("/UserSignin")
+def userSignin(uuid: str, password: str, company: str):
+    connection = StartUp()
+    result = database.check_if_user_exists(
+        connection, uuid, password, company)
+    return {"result": result}
+
+
+@app.get("/PushData")
+def pushData(uuid: str, timestamp: str, data: str):
+    connection = StartUp()
+    result = database.push_data(connection, uuid, timestamp, data)
+    return {"result": result}
+
+
+@app.get("/GetData")
+def getData(uuid: str, timestamp: str = ""):
+    connection = StartUp()
+    result = database.get_data(connection, uuid, timestamp)
+    return result
+
+
 @app.get("/")
-@app.get("/Test")
-def test():
-    return {"welcome": "working"}
+def home():
+    connection = StartUp()
+    return {"result": "Hello World"}
 
 
 if "__main__" == __name__:
