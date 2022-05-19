@@ -24,13 +24,14 @@ RUN apt-get install vim nano -y
 
 # Handing opencv dependencies
 
-# RUN apt-get update
+RUN apt-get update
 # RUN apt-get install ffmpeg -y
 
 # remove unwanted packages
 
 RUN apt-get autoremove -y
 RUN apt-get clean -y
+RUN apt-get install --fix-missing
 
 # setup project
 
@@ -39,7 +40,9 @@ RUN git clone https://github.com/Rethium/Backend
 WORKDIR /home/Rethium/Backend
 RUN git pull
 RUN pip3 install uvicorn
+RUN pip3 install pydantic
 RUN pip3 install -r requirements.txt
+RUN ls
 
 EXPOSE 8000
-CMD ["uvicorn", "app:app --reload"]
+CMD ["python3", "app.py"]

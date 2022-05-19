@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import uvicorn
 import database
 import sys
 import os
@@ -41,3 +42,11 @@ def update():
     subprocess_return = sp.stdout.read()
     subprocess_return = subprocess_return.decode('utf-8')
     return subprocess_return
+
+@app.get("/")
+@app.get("/Test")
+def test():
+    return {"welcome": "working"}
+
+if "__main__" == __name__:
+    uvicorn.run("app:app",host='0.0.0.0', port=8000, reload=True, debug=True, workers=3)
