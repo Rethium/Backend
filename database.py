@@ -19,7 +19,7 @@ GET_DATA = 'SELECT * FROM data WHERE uuid = ? AND timestamp = ? ;'
 GET_ALL_DATA = 'SELECT * FROM data WHERE uuid = ?;'
 
 
-# new queries
+# new queries     
 
 
 def connect():
