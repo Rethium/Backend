@@ -10,6 +10,13 @@ def StartUp():
     return connection
 
 
+def run_subprocess(command):
+    sp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+    subprocess_return = sp.stdout.read()
+    subprocess_return = subprocess_return.decode('utf-8')
+    return subprocess_return
+
+
 app = FastAPI()
 
 
@@ -32,18 +39,12 @@ def getallusers():
 
 @app.get("/UpdateApp")
 def update():
-    sp = subprocess.Popen("git pull", shell=True, stdout=subprocess.PIPE)
-    subprocess_return = sp.stdout.read()
-    subprocess_return = subprocess_return.decode('utf-8')
-    return subprocess_return
+    return run_subprocess("git pull")
+
 
 @app.get("/VersionNumber")
 def version():
-    sp = subprocess.Popen("git rev-parse --short HEAD", shell=True, stdout=subprocess.PIPE)
-    subprocess_return = sp.stdout.read()
-    subprocess_return = subprocess_return.decode('utf-8')
-    version={"version":subprocess_return.replace("\n","")}
-    return version
+    return run_subprocess("git rev-parse --short HEAD")
 
 
 @app.get("/DashboardSignIn")
