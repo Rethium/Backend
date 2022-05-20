@@ -37,6 +37,13 @@ def update():
     subprocess_return = subprocess_return.decode('utf-8')
     return subprocess_return
 
+@app.get("/VersionNumber")
+def update():
+    sp = subprocess.Popen("git rev-parse --short HEAD", shell=True, stdout=subprocess.PIPE)
+    subprocess_return = sp.stdout.read()
+    subprocess_return = subprocess_return.decode('utf-8')
+    return subprocess_return
+
 
 @app.get("/DashboardSignIn")
 def dashboardsignin(username: str, password: str):
