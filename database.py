@@ -19,7 +19,7 @@ GET_DATA = 'SELECT * FROM data WHERE uuid = ? AND timestamp = ? ;'
 GET_ALL_DATA = 'SELECT * FROM data WHERE uuid = ?;'
 
 
-# new queries     
+# new queries
 
 
 def connect():
@@ -35,7 +35,7 @@ def create_tables(connection):
 
 def get_all_users(connection):
     with connection:
-        result=connection.execute(GET_ALL_USERS).fetchall()
+        result = connection.execute(GET_ALL_USERS).fetchall()
         print(result)
         return result
 
@@ -50,9 +50,13 @@ def check_if_user_exists(connection, uuid, password, company):
 
 
 def register_user(connection, uuid, password, company, macid):
-    with connection:
-        connection.execute(REGISTER_USER, (company, uuid, password, macid))
-        return check_if_user_exists(connection, uuid, password, company)
+    check_user = check_if_user_exists(connection, uuid, password, company)
+    if(check_user["status"] == "success"):
+        return {"status": "failure", "message": "user already exists"}
+    else:
+        with connection:
+            connection.execute(REGISTER_USER, (company, uuid, password, macid))
+            return check_if_user_exists(connection, uuid, password, company)
 
 
 def view_all_users(connection):
