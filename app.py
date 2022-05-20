@@ -38,7 +38,7 @@ def update():
     return subprocess_return
 
 @app.get("/VersionNumber")
-def update():
+def version():
     sp = subprocess.Popen("git rev-parse --short HEAD", shell=True, stdout=subprocess.PIPE)
     subprocess_return = sp.stdout.read()
     subprocess_return = subprocess_return.decode('utf-8')
