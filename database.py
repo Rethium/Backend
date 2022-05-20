@@ -43,7 +43,7 @@ def check_if_user_exists(connection, uuid, password, company):
         val = connection.execute(CHECK_IF_USER_EXISTS,
                                  (uuid, password, company)).fetchone()
         if val is None:
-            return{"macid": ""}
+            return{"status": "failure", "message":"incorrect combination of username,password and company"}
         return {"status": "success", "macid": val[-1]}
 
 

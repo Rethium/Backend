@@ -55,7 +55,7 @@ def userSignin(uuid: str, password: str, company: str):
     connection = StartUp()
     result = database.check_if_user_exists(
         connection, uuid, password, company)
-    return {"result": result}
+    return result
 
 
 @app.get("/PushData")
