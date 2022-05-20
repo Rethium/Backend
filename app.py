@@ -32,7 +32,7 @@ def update():
 def dashboardsignin(username: str, password: str):
     connection = StartUp()
     result = database.dashboard_signin(connection, username, password)
-    return {"result": result}
+    return result
 
 
 @app.get("/DashboardSignUp")

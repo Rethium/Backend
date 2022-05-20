@@ -49,7 +49,11 @@ def check_if_user_exists(connection, uuid, password, company):
 
 def dashboard_signin(connection, username, password):
     with connection:
-        return connection.execute(CHECK_IF_ADMIN_EXISTS, (username, password)).fetchone()
+        result=connection.execute(CHECK_IF_ADMIN_EXISTS, (username, password)).fetchone()
+        if result is None:
+            return {"status": "failure", "message": "incorrect username or password"}
+        else:
+            return {"status": "success", "message": "admin logged in successfully"}
 
 
 def dashboard_signup(connection, username, password, secretkey):
