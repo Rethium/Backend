@@ -23,7 +23,7 @@ GET_ALL_DATA = 'SELECT * FROM data WHERE uuid = ?;'
 
 
 def connect():
-    return sqlite3.connect('data.db')
+    return sqlite3.connect('database.db')
 
 
 def create_tables(connection):

@@ -1,4 +1,4 @@
 __pycache__/
 run.bat
 config.json
-data.db
+database.db
