@@ -43,13 +43,14 @@ def check_if_user_exists(connection, uuid, password, company):
         val = connection.execute(CHECK_IF_USER_EXISTS,
                                  (uuid, password, company)).fetchone()
         if val is None:
-            return{"status": "failure", "message":"incorrect combination of username,password and company"}
+            return{"status": "failure", "message": "incorrect combination of username, password and company"}
         return {"status": "success", "macid": val[-1]}
 
 
 def dashboard_signin(connection, username, password):
     with connection:
-        result=connection.execute(CHECK_IF_ADMIN_EXISTS, (username, password)).fetchone()
+        result = connection.execute(
+            CHECK_IF_ADMIN_EXISTS, (username, password)).fetchone()
         if result is None:
             return {"status": "failure", "message": "incorrect username or password"}
         else:
@@ -73,6 +74,7 @@ def dashboard_signup(connection, username, password, secretkey):
 def register_user(connection, uuid, password, company, macid):
     with connection:
         connection.execute(REGISTER_USER, (company, uuid, password, macid))
+        return check_if_user_exists(connection, uuid, password, company)
 
 
 def get_column_names(connection):

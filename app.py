@@ -47,7 +47,7 @@ def registeruser(company: str, uuid: str, password: str, macid: str):
     connection = StartUp()
     result = database.register_user(
         connection, company, uuid, password, macid)
-    return {"result": result}
+    return result
 
 
 @app.get("/UserSignin")
