@@ -6,7 +6,7 @@ CREATE_USER_TABLE = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, u
 CREATE_DASHBOARD_ADMIN = 'CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMARY KEY, name TEXT, password TEXT);'
 CREATE_DATA_TABLE = 'CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY, uuid TEXT, timestamp TEXT, data TEXT);'
 # new queries
-GET_ALL_USERS = 'SELECT * FROM users;'
+GET_ALL_USERS = 'SELECT * FROM users'
 CHECK_IF_USER_EXISTS = 'SELECT * FROM users WHERE uuid = ? AND password = ? AND company = ?'
 CHECK_IF_ADMIN_EXISTS = 'SELECT * FROM admins WHERE name = ? AND password = ?;'
 ADD_ADMIN = 'INSERT INTO admins (name, password) VALUES (?, ?);'
@@ -35,7 +35,9 @@ def create_tables(connection):
 
 def get_all_users(connection):
     with connection:
-        return connection.execute(GET_ALL_USERS).fetchall()
+        result=connection.execute(GET_ALL_USERS).fetchall()
+        print(result)
+        return result
 
 
 def check_if_user_exists(connection, uuid, password, company):
@@ -45,6 +47,19 @@ def check_if_user_exists(connection, uuid, password, company):
         if val is None:
             return{"status": "failure", "message": "incorrect combination of username, password and company"}
         return {"status": "success", "macid": val[-1]}
+
+
+def register_user(connection, uuid, password, company, macid):
+    with connection:
+        connection.execute(REGISTER_USER, (company, uuid, password, macid))
+        return check_if_user_exists(connection, uuid, password, company)
+
+
+def view_all_users(connection):
+    with connection:
+        result = connection.execute(GET_ALL_USERS).fetchall()
+        print(result)
+        return result
 
 
 def dashboard_signin(connection, username, password):
@@ -69,12 +84,6 @@ def dashboard_signup(connection, username, password, secretkey):
             return {"status": "success", "message": "admin added successfully"}
     else:
         {"status": "failure", "message": "secretkey is incorrect"}
-
-
-def register_user(connection, uuid, password, company, macid):
-    with connection:
-        connection.execute(REGISTER_USER, (company, uuid, password, macid))
-        return check_if_user_exists(connection, uuid, password, company)
 
 
 def get_column_names(connection):

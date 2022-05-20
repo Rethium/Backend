@@ -16,8 +16,18 @@ app = FastAPI()
 @app.get("/GetAllUsers")
 def getallusers():
     connection = StartUp()
-    result = database.get_all_users(connection)
-    return {"result": result}
+    query_result = database.get_all_users(connection)
+    result = {}
+    for x in range(len(query_result)):
+        temp = {query_result[x][0]: {
+            "uuid": query_result[x][2],
+            "password": query_result[x][3],
+            "company": query_result[x][1],
+            "macid": query_result[x][4]
+        }
+        }
+        result.update(temp)
+    return result
 
 
 @app.get("/UpdateApp")
@@ -38,7 +48,8 @@ def dashboardsignin(username: str, password: str):
 @app.get("/DashboardSignUp")
 def dashboardsignup(username: str, password: str, secretkey: str):
     connection = StartUp()
-    result = database.dashboard_signup(connection, username, password,secretkey)
+    result = database.dashboard_signup(
+        connection, username, password, secretkey)
     return {"result": result}
 
 
