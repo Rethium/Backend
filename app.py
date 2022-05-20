@@ -35,6 +35,13 @@ def dashboardsignin(username: str, password: str):
     return {"result": result}
 
 
+@app.get("/DashboardSignUp")
+def dashboardsignup(username: str, password: str, secretkey: str):
+    connection = StartUp()
+    result = database.dashboard_signup(connection, username, password,secretkey)
+    return {"result": result}
+
+
 @app.get("/RegisterUser")
 def registeruser(company: str, uuid: str, password: str, macid: str):
     connection = StartUp()

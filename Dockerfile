@@ -19,7 +19,7 @@ WORKDIR /home/Rethium
 RUN git clone https://github.com/Rethium/Backend
 WORKDIR /home/Rethium/Backend
 RUN git pull
-RUN pip3 install uvicorn
+COPY config.json .
 RUN pip3 install pydantic
 RUN pip3 install -r requirements.txt
 RUN ls

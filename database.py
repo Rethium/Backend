@@ -1,5 +1,5 @@
-from pkgutil import get_data
 import sqlite3
+import json
 
 # table creation statements
 CREATE_USER_TABLE = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, uuid TEXT, password TEXT, company TEXT, macid TEXT);'
@@ -9,6 +9,7 @@ CREATE_DATA_TABLE = 'CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY, uu
 GET_ALL_USERS = 'SELECT * FROM users;'
 CHECK_IF_USER_EXISTS = 'SELECT * FROM users WHERE uuid = ? AND password = ? AND company = ?'
 CHECK_IF_ADMIN_EXISTS = 'SELECT * FROM admins WHERE name = ? AND password = ?;'
+ADD_ADMIN = 'INSERT INTO admins (name, password) VALUES (?, ?);'
 REGISTER_USER = 'INSERT INTO users (company, uuid, password, macid) VALUES (?, ?, ?, ?);'
 GET_MAC_ID_OF_USER = 'SELECT macid FROM users WHERE uuid = ? AND password = ? AND company = ?'
 EDIT_MAC_ID = 'UPDATE users SET macid = ? WHERE uuid = ? AND password = ? AND company = ?'
@@ -49,6 +50,20 @@ def check_if_user_exists(connection, uuid, password, company):
 def dashboard_signin(connection, username, password):
     with connection:
         return connection.execute(CHECK_IF_ADMIN_EXISTS, (username, password)).fetchone()
+
+
+def dashboard_signup(connection, username, password, secretkey):
+    config = None
+    with open("config.json", "r+") as f:
+        config = f.read()
+    config = json.loads(config)
+    Json_secretkey = config["secretkey"]
+    if(Json_secretkey == secretkey):
+        with connection:
+            connection.execute(ADD_ADMIN, (username, password)).fetchone()
+            return {"status": "success", "message": "admin added successfully"}
+    else:
+        {"status": "failure", "message": "secretkey is incorrect"}
 
 
 def register_user(connection, uuid, password, company, macid):
