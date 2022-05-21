@@ -34,7 +34,7 @@ def getallusers():
         }
         }
         result.update(temp)
-    return result
+    return query_result
 
 
 @app.get("/UpdateApp")

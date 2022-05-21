@@ -36,7 +36,6 @@ def create_tables(connection):
 def get_all_users(connection):
     with connection:
         result = connection.execute(GET_ALL_USERS).fetchall()
-        print(result)
         return result
 
 
