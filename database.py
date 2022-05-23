@@ -63,7 +63,7 @@ def register_user(connection, uuid, password, company, macid):
 
 def delete_user(connection, uuid, company):
     with connection:
-        connection.execute(DELETE_ALL_USERS, (uuid, company))
+        connection.execute(DELETE_ALL_USERS)
         result = connection.execute(
             CHECK_IF_USER_DELETED, (uuid, company)).fetchone()
         if result is None:
