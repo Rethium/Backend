@@ -11,6 +11,7 @@ CHECK_IF_USER_EXISTS = 'SELECT * FROM users WHERE uuid = ? AND password = ? AND 
 CHECK_IF_ADMIN_EXISTS = 'SELECT * FROM admins WHERE name = ? AND password = ?;'
 ADD_ADMIN = 'INSERT INTO admins (name, password) VALUES (?, ?);'
 REGISTER_USER = 'INSERT INTO users (company, uuid, password, macid) VALUES (?, ?, ?, ?);'
+DELETE_USER = 'DELETE FROM users WHERE uuid = ? AND company = ?'
 GET_MAC_ID_OF_USER = 'SELECT macid FROM users WHERE uuid = ? AND password = ? AND company = ?'
 EDIT_MAC_ID = 'UPDATE users SET macid = ? WHERE uuid = ? AND password = ? AND company = ?'
 GET_COLUMN_NAMES_FOR_USER_TABLE = 'PRAGMA table_info(users);'
@@ -56,6 +57,12 @@ def register_user(connection, uuid, password, company, macid):
         with connection:
             connection.execute(REGISTER_USER, (company, uuid, password, macid))
             return check_if_user_exists(connection, uuid, password, company)
+
+
+def delete_user(connection, uuid, company):
+    with connection:
+        connection.execute(DELETE_USER, (uuid, company))
+        return {"status": "success", "message": "user deleted successfully"}
 
 
 def view_all_users(connection):

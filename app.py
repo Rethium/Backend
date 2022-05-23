@@ -107,6 +107,13 @@ def registeruser(company: str, uuid: str, password: str, macid: str):
         connection, company, uuid, password, macid)
     return result
 
+@app.get("/DeleteUser")
+def deleteruser(company: str, uuid: str):
+    connection = StartUp()
+    result = database.delete_user(
+        connection, company, uuid)
+    return result
+
 
 @app.get("/UserSignin")
 def userSignin(uuid: str, password: str, company: str):
