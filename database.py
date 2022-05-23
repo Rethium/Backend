@@ -8,6 +8,7 @@ CREATE_DATA_TABLE = 'CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY, uu
 # new queries
 GET_ALL_USERS = 'SELECT * FROM users'
 CHECK_IF_USER_EXISTS = 'SELECT * FROM users WHERE uuid = ? AND password = ? AND company = ?'
+CHECK_IF_USER_DELETED = 'SELECT * FROM users WHERE uuid = ? AND company = ?'
 CHECK_IF_ADMIN_EXISTS = 'SELECT * FROM admins WHERE name = ? AND password = ?;'
 ADD_ADMIN = 'INSERT INTO admins (name, password) VALUES (?, ?);'
 REGISTER_USER = 'INSERT INTO users (company, uuid, password, macid) VALUES (?, ?, ?, ?);'
@@ -62,7 +63,12 @@ def register_user(connection, uuid, password, company, macid):
 def delete_user(connection, uuid, company):
     with connection:
         connection.execute(DELETE_USER, (uuid, company))
-        return {"status": "success", "message": "user deleted successfully"}
+        result = connection.execute(
+            CHECK_IF_USER_DELETED, (uuid, company)).fetchone()
+        if result is None:
+            return {"status": "success", "message": "user deleted successfully"}
+        else:
+            return {"status": "failure", "message": "user not deleted"}
 
 
 def view_all_users(connection):
