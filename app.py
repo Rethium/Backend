@@ -107,6 +107,20 @@ def registeruser(company: str, uuid: str, password: str, macid: str):
         connection, company, uuid, password, macid)
     return result
 
+@app.get("/RegisterCompany")
+def registercompany(company: str):
+    connection = StartUp()
+    result = database.register_company(
+        connection, company)
+    return result
+
+@app.get("/GetAllCompanies")
+def getallcompanies():
+    connection = StartUp()
+    result = database.get_all_companies(
+        connection)
+    return result
+
 @app.get("/DeleteUser")
 def deleteruser(company: str, uuid: str):
     connection = StartUp()

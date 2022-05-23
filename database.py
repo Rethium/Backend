@@ -5,6 +5,7 @@ import json
 CREATE_USER_TABLE = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, uuid TEXT, password TEXT, company TEXT, macid TEXT);'
 CREATE_DASHBOARD_ADMIN = 'CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMARY KEY, name TEXT, password TEXT);'
 CREATE_DATA_TABLE = 'CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY, uuid TEXT, timestamp TEXT, data TEXT);'
+CREATE_COMPANY_TABLE = 'CREATE TABLE IF NOT EXISTS company (companyname TEXT PRIMARY KEY);'
 # new queries
 GET_ALL_USERS = 'SELECT * FROM users'
 CHECK_IF_USER_EXISTS = 'SELECT * FROM users WHERE uuid = ? AND password = ? AND company = ?'
@@ -20,9 +21,9 @@ PUSH_DATA = 'INSERT INTO data (uuid, timestamp, data) VALUES (?, ?, ?);'
 GET_DATA = 'SELECT * FROM data WHERE uuid = ? AND timestamp = ? ;'
 GET_ALL_DATA = 'SELECT * FROM data WHERE uuid = ?;'
 DELETE_ALL_USERS = 'DELETE FROM users;'
-
-
-# new queries
+REGISTER_COMPANY = "INSERT INTO company (companyname) VALUES (?);"
+CHECK_COMPANY_EXISTS = 'SELECT * FROM company WHERE companyname = ?;'
+GET_ALL_COMPANIES = 'SELECT companyname FROM company'
 
 
 def connect():
@@ -34,6 +35,7 @@ def create_tables(connection):
         connection.execute(CREATE_USER_TABLE)
         connection.execute(CREATE_DASHBOARD_ADMIN)
         connection.execute(CREATE_DATA_TABLE)
+        connection.execute(CREATE_COMPANY_TABLE)
 
 
 def get_all_users(connection):
@@ -59,6 +61,33 @@ def register_user(connection, uuid, password, company, macid):
         with connection:
             connection.execute(REGISTER_USER, (company, uuid, password, macid))
             return check_if_user_exists(connection, uuid, password, company)
+
+
+def check_if_company_exists(connection, company):
+    with connection:
+        val = connection.execute(CHECK_COMPANY_EXISTS, (company,)).fetchone()
+        if val is None:
+            return {"status": "failure", "message": "company does not exist"}
+        return {"status": "success", "message": "company exists"}
+
+
+def register_company(connection, company):
+    check_company = check_if_company_exists(connection, company)
+    if(check_company["status"] == "success"):
+        return {"status": "failure", "message": "company already exists"}
+    else:
+        with connection:
+            connection.execute(REGISTER_COMPANY, (company,))
+            return check_if_company_exists(connection, company)
+
+
+def get_all_companies(connection):
+    with connection:
+        result = connection.execute(GET_ALL_COMPANIES).fetchall()
+        listofcompanies=list()
+        for x in result:
+            listofcompanies.append(x[0])
+        return listofcompanies
 
 
 def delete_user(connection, uuid, company):
