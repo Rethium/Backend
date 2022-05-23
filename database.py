@@ -19,6 +19,7 @@ GET_COLUMN_NAMES_FOR_USER_TABLE = 'PRAGMA table_info(users);'
 PUSH_DATA = 'INSERT INTO data (uuid, timestamp, data) VALUES (?, ?, ?);'
 GET_DATA = 'SELECT * FROM data WHERE uuid = ? AND timestamp = ? ;'
 GET_ALL_DATA = 'SELECT * FROM data WHERE uuid = ?;'
+DELETE_ALL_USERS = 'DELETE FROM users;'
 
 
 # new queries
@@ -62,7 +63,7 @@ def register_user(connection, uuid, password, company, macid):
 
 def delete_user(connection, uuid, company):
     with connection:
-        connection.execute(DELETE_USER, (uuid, company))
+        connection.execute(DELETE_ALL_USERS, (uuid, company))
         result = connection.execute(
             CHECK_IF_USER_DELETED, (uuid, company)).fetchone()
         if result is None:
