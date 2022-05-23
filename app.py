@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 import database
 import subprocess
+from fastapi.middleware.cors import CORSMiddleware
 
 
 def StartUp():
@@ -18,6 +19,25 @@ def run_subprocess(command):
 
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:5050",
+    "http://143.110.176.59",
+    "https://143.110.176.59",
+    "http://143.110.176.59:5050/",
+    "https://143.110.176.59:5050/"
+
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/GetAllUsers")
