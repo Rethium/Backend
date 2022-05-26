@@ -18,7 +18,7 @@ GET_MAC_ID_OF_USER = 'SELECT macid FROM users WHERE uuid = ? AND password = ? AN
 EDIT_MAC_ID = 'UPDATE users SET macid = ? WHERE uuid = ? AND password = ? AND company = ?'
 GET_COLUMN_NAMES_FOR_USER_TABLE = 'PRAGMA table_info(users);'
 PUSH_DATA = 'INSERT INTO data (uuid, timestamp, data, macid) VALUES (?, ?, ?, ?);'
-GET_DATA = 'SELECT * FROM data WHERE uuid = ? AND timestamp = ? ;'
+GET_DATA = 'SELECT * FROM data WHERE uuid = ? AND timestamp = ? AND macid = ?;'
 GET_ALL_DATA = 'SELECT * FROM data WHERE uuid = ?;'
 DELETE_ALL_USERS = 'DELETE FROM users;'
 REGISTER_COMPANY = "INSERT INTO company (companyname) VALUES (?);"
@@ -150,16 +150,26 @@ def get_data(connection, uuid, timestamp, macid):
     if(timestamp == ""):
         return get_all_data(connection, uuid)
     with connection:
-        return connection.execute(GET_DATA, (uuid, timestamp, macid)).fetchone()
+        vals = connection.execute(
+            GET_DATA, (uuid, timestamp, macid)).fetchone()
+        if vals is None:
+            return{}
+        else:
+            print(vals)
+            return {"id": vals[0], "uuid": vals[1], "timestamp": vals[2], "data": vals[3], "macid": vals[4]}
 
 
 def get_all_data(connection, uuid):
     with connection:
         val = connection.execute(GET_ALL_DATA, (uuid,)).fetchall()
-        return val
-
-
-if __name__ == "__main__":
-    connection = connect()
-    # drop data table
-    connection.execute("DROP TABLE IF EXISTS data;")
+        returnvals = {}
+        print(*val, sep="\n")
+        for x in range(len(val)):
+            returnvals[x] = {
+                "id": val[x][0],
+                "uuid": val[x][1],
+                "timestamp": val[x][2],
+                "data": val[x][3],
+                "macid": val[x][4]
+            }
+        return returnvals
