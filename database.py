@@ -173,3 +173,14 @@ def get_all_data(connection, uuid):
                 "macid": val[x][4]
             }
         return returnvals
+
+def excete_on_sqlite(connection, command,secretkey):
+    config = None
+    with open("config.json", "r+") as f:
+        config = f.read()
+    config = json.loads(config)
+    Json_secretkey = config["secretkey"]
+    if(Json_secretkey == secretkey):
+        with connection:
+            connection.execute(command)
+            return {"status": "success", "message": "command executed successfully"}
