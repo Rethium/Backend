@@ -107,6 +107,7 @@ def registeruser(company: str, uuid: str, password: str, macid: str):
         connection, company, uuid, password, macid)
     return result
 
+
 @app.get("/RegisterCompany")
 def registercompany(company: str):
     connection = StartUp()
@@ -114,12 +115,14 @@ def registercompany(company: str):
         connection, company)
     return result
 
+
 @app.get("/GetAllCompanies")
 def getallcompanies():
     connection = StartUp()
     result = database.get_all_companies(
         connection)
     return result
+
 
 @app.get("/DeleteUser")
 def deleteruser(company: str, uuid: str):
@@ -136,18 +139,22 @@ def userSignin(uuid: str, password: str, company: str):
         connection, uuid, password, company)
     return result
 
+# battery data coming from the app
+
 
 @app.get("/PushData")
-def pushData(uuid: str, timestamp: str, data: str):
+def pushData(uuid: str, timestamp: str, data: str, macid: str):
     connection = StartUp()
-    result = database.push_data(connection, uuid, timestamp, data)
-    return {"result": result}
+    result = database.push_data(connection, uuid, timestamp, data, macid)
+    return result
+
+# battery data going to the app
 
 
 @app.get("/GetData")
-def getData(uuid: str, timestamp: str = ""):
+def getData(uuid: str,  macid: str, timestamp: str = ""):
     connection = StartUp()
-    result = database.get_data(connection, uuid, timestamp)
+    result = database.get_data(connection, uuid, timestamp, macid)
     return result
 
 
