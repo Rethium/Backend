@@ -21,6 +21,7 @@ GET_COLUMN_NAMES_FOR_USER_TABLE = 'PRAGMA table_info(users);'
 PUSH_DATA = 'INSERT INTO data (uuid, timestamp, data, macid) VALUES (?, ?, ?, ?);'
 GET_DATA = 'SELECT * FROM data WHERE uuid = ? AND timestamp = ? AND macid = ?;'
 GET_ALL_DATA = 'SELECT * FROM data WHERE uuid = ?;'
+GET_ALL_DATA_2 = 'SELECT * FROM data'
 DELETE_ALL_USERS = 'DELETE FROM users;'
 REGISTER_COMPANY = "INSERT INTO company (companyname) VALUES (?);"
 CHECK_COMPANY_EXISTS = 'SELECT * FROM company WHERE companyname = ?;'
@@ -181,7 +182,22 @@ def get_all_data(connection, uuid):
             }
         return returnvals
 
-def excete_on_sqlite(connection, command,secretkey):
+def get_all_data_2(connection):
+    val=connection.execute(GET_ALL_DATA_2).fetchall()
+    returnvals = {}
+    print(*val, sep="\n")
+    for x in range(len(val)):
+        returnvals[x] = {
+            "id": val[x][0],
+            "uuid": val[x][1],
+            "timestamp": val[x][2],
+            "data": val[x][3],
+            "macid": val[x][4]
+        }
+    return returnvals
+
+
+def excete_on_sqlite(connection, command, secretkey):
     config = None
     with open("config.json", "r+") as f:
         config = f.read()

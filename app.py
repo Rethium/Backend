@@ -158,6 +158,13 @@ def getData(uuid: str,  macid: str, timestamp: str = ""):
     return result
 
 
+@app.get("/GetAllData")
+def getAllData():
+    connection = StartUp()
+    result = database.get_all_data_2(connection)
+    return result
+
+
 @app.get("/ExcuteOnSQLite")
 def getData(command: str, secretkey: str):
     connection = StartUp()
