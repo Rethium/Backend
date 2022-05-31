@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import sqlite3
 import json
 
@@ -141,6 +142,12 @@ def get_column_names(connection):
 
 
 def push_data(connection, uuid, timestamp, data, macid):
+    now = datetime.utcnow()
+    now = now+timedelta(hours=5, minutes=30)
+    current_time = now.strftime("%H:%M:%S")
+    today = now.strftime("%d-%m-%Y")
+    update_time = current_time+" "+today
+    timestamp = update_time
     with connection:
         connection.execute(PUSH_DATA, (uuid, timestamp, data, macid))
         return {"status": "success"}
