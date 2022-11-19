@@ -92,7 +92,7 @@ def getallusers():
 
 @app.get("/UpdateApp")
 def update():
-    return run_subprocess("git pull")
+    return run_subprocess("git stash")+run_subprocess("git pull")
 
 
 @app.get("/VersionNumber")
