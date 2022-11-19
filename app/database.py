@@ -12,11 +12,11 @@ def connect():
 
 
 def create_tables(connection):
+    tables = [CREATE_COMPANY_TABLE, CREATE_USER_TABLE,
+              CREATE_DATA_TABLE, CREATE_DASHBOARD_ADMIN]
     with connection:
-        connection.execute(CREATE_USER_TABLE)
-        connection.execute(CREATE_DASHBOARD_ADMIN)
-        connection.execute(CREATE_DATA_TABLE)
-        connection.execute(CREATE_COMPANY_TABLE)
+        for table in tables:
+            connection.execute(table)
 
 
 def get_all_users(connection, JSON=False):
