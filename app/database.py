@@ -5,6 +5,7 @@ import os
 from constants.SQLite_commands import *
 from constants.envs import *
 
+
 def connect():
 
     return sqlite3.connect('database/database.db')
@@ -39,7 +40,7 @@ def register_user(connection, uuid, password, company, macid):
         return {"status": "failure", "message": "user already exists"}
     else:
         with connection:
-            connection.execute(REGISTER_USER, (company, uuid, password, macid))
+            connection.execute(REGISTER_USER, (uuid, password, company, macid))
             return check_if_user_exists(connection, uuid, password, company)
 
 
