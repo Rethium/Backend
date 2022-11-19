@@ -87,9 +87,9 @@ def switchToStaging():
     return run_subprocess(["git stash", "git checkout staging", "git branch"])
 
 
-@app.get("/SwitchToMaster", response_class=PlainTextResponse)
+@app.get("/SwitchToMain", response_class=PlainTextResponse)
 def switchToMaster():
-    return run_subprocess(["git stash", "git checkout master", "git branch"])
+    return run_subprocess(["git stash", "git checkout main", "git branch"])
 
 
 @app.get("/VersionNumber", response_class=PlainTextResponse)
