@@ -8,7 +8,7 @@ from constants.envs import *
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from starlette.responses import FileResponse
+from starlette.responses import FileResponse, PlainTextResponse
 
 import database
 
@@ -97,12 +97,12 @@ def getallusers():
     return result
 
 
-@app.get("/UpdateApp")
+@app.get("/UpdateApp",response_class=PlainTextResponse)
 def update():
     return run_subprocess(["git stash", "git pull"])
 
 
-@app.get("/VersionNumber")
+@app.get("/VersionNumber",response_class=PlainTextResponse)
 def version():
     return run_subprocess(["git rev-parse --short HEAD"])
 
