@@ -1,13 +1,16 @@
-from fastapi import FastAPI
-import uvicorn
-import database
-import subprocess
 import logging
-import setup_instance
-from fastapi.middleware.cors import CORSMiddleware
-from starlette.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 import os
+import subprocess
+
+import setup_instance
+import uvicorn
+from constants.envs import *
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from starlette.responses import FileResponse
+
+import database
 
 
 def StartUp():
@@ -198,7 +201,7 @@ def getData(command: str, secretkey: str):
 
 @app.get("/logs")
 async def logs(secretkey: str):
-    if (secretkey == os.getenv("SECRET_KEY")):
+    if (secretkey == SECRET_KEY):
         return FileResponse('logs/app.log')
     else:
         return {"error": "unauthorized access"}
