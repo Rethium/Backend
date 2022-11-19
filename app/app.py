@@ -77,12 +77,22 @@ def getallusers():
     return query_result
 
 
-@app.get("/UpdateApp",response_class=PlainTextResponse)
+@app.get("/UpdateApp", response_class=PlainTextResponse)
 def update():
     return run_subprocess(["git stash", "git pull"])
 
 
-@app.get("/VersionNumber",response_class=PlainTextResponse)
+@app.get("/SwitchToStaging", response_class=PlainTextResponse)
+def switchToStaging():
+    return run_subprocess(["git stash", "git checkout staging", "git branch"])
+
+
+@app.get("/SwitchToMaster", response_class=PlainTextResponse)
+def switchToMaster():
+    return run_subprocess(["git stash", "git checkout master", "git branch"])
+
+
+@app.get("/VersionNumber", response_class=PlainTextResponse)
 def version():
     return run_subprocess(["git rev-parse --short HEAD"])
 

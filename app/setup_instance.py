@@ -1,4 +1,4 @@
-from os import path, mkdir
+from os import path, mkdir,system
 
 dirs = ["logs", "database", "public/downloads"]
 
@@ -8,3 +8,6 @@ for dir in dirs:
 
 with open('logs/app.log', 'w+') as fp:
     fp.close()
+
+system("git fetch --all")
+system("git checkout --track origin/staging")
