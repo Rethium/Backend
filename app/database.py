@@ -19,9 +19,20 @@ def create_tables(connection):
         connection.execute(CREATE_COMPANY_TABLE)
 
 
-def get_all_users(connection):
+def get_all_users(connection, JSON=False):
     with connection:
         result = connection.execute(GET_ALL_USERS).fetchall()
+        if JSON:
+            result_dict = {}
+            for x in range(len(result)):
+                temp = {result[x][0]: {
+                    "uuid": result[x][3],
+                    "password": result[x][1],
+                    "company": result[x][2],
+                    "macid": result[x][4]
+                }}
+                result_dict.update(temp)
+                return result_dict
         return result
 
 
