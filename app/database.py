@@ -184,7 +184,7 @@ def download_data(connection):
             "data": val[x][3],
             "macid": val[x][4]
         }
-    file = os.path.join(os.getcwd(), "public", "data.json")
+    file = os.path.join(os.getcwd(), "public", "downloads", "data.json")
     with (open(file, "w")) as f:
         json.dump(returnvals, f)
     return file

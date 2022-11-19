@@ -1,6 +1,6 @@
 from os import path, mkdir
 
-dirs = ["logs", "database"]
+dirs = ["logs", "database", "public/downloads"]
 
 for dir in dirs:
     if not path.exists(dir):

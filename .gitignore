@@ -5,3 +5,5 @@ database.db
 app.log
 .env
 .password
+downloads/
+```
