@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import sqlite3
 import json
 import os
+from os import path, getenv,mkdir
 
 # table creation statements
 CREATE_USER_TABLE = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, uuid TEXT, password TEXT, company TEXT, macid TEXT);'
@@ -30,6 +31,9 @@ GET_ALL_COMPANIES = 'SELECT companyname FROM company'
 
 
 def connect():
+    if not path.exists("database"):
+        mkdir("database")
+
     return sqlite3.connect('database/database.db')
 
 
