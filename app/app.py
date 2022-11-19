@@ -23,10 +23,10 @@ def run_subprocess(commands: list):
     stdout = list()
     for command in commands:
         sp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
-        subprocess_return = sp.stdout.read()
-        subprocess_return = subprocess_return.decode('utf-8')
+        subprocess_return = sp.stdout.read().decode('utf-8')
         subprocess_return = subprocess_return.split("\n")
-        stdout.append(subprocess_return)
+        for line in subprocess_return:
+            stdout.append(line)
     return '\n'.join(stdout)
 
 
