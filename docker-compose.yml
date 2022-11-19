@@ -1,6 +1,6 @@
 version: "3.7" 
 services:
-  Rethium_Backend:
+  rethium_backend:
     build:
       context: ./
       dockerfile: ./deployment/Dockerfile
