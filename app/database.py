@@ -31,8 +31,6 @@ GET_ALL_COMPANIES = 'SELECT companyname FROM company'
 
 
 def connect():
-    if not path.exists("database"):
-        mkdir("database")
 
     return sqlite3.connect('database/database.db')
 

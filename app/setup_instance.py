@@ -1,9 +1,10 @@
-import os
+from os import path, mkdir
 
-if(os.path.exists("logs")):
-    pass
-else:
-    os.mkdir("logs")
+dirs = ["logs", "database"]
+
+for dir in dirs:
+    if not path.exists(dir):
+        mkdir(dir)
 
 with open('logs/app.log', 'w+') as fp:
     fp.close()
