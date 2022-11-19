@@ -1,0 +1,12 @@
+version: "3.7" 
+services:
+  rethium_api:
+    build:
+      context: ./
+      dockerfile: ./deployment/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/rethium
+    env_file:
+      - ./deployment/.env

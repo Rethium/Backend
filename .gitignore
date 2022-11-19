@@ -1,1 +1,7 @@
 __pycache__/
+run.bat
+config.json
+database.db
+app.log
+.env
+.password
