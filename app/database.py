@@ -26,13 +26,13 @@ def get_all_users(connection, JSON=False):
             result_dict = {}
             for x in range(len(result)):
                 temp = {result[x][0]: {
-                    "uuid": result[x][3],
-                    "password": result[x][1],
-                    "company": result[x][2],
+                    "uuid": result[x][1],
+                    "password": result[x][2],
+                    "company": result[x][3],
                     "macid": result[x][4]
                 }}
                 result_dict.update(temp)
-                return result_dict
+            return result_dict
         return result
 
 
@@ -46,13 +46,14 @@ def check_if_user_exists(connection, uuid, password, company):
 
 
 def register_user(connection, uuid, password, company, macid):
-    check_user = check_if_user_exists(connection, uuid, password, company)
+    check_user = check_if_user_exists(
+        connection=connection, uuid=uuid, password=password, company=company)
     if (check_user["status"] == "success"):
         return {"status": "failure", "message": "user already exists"}
     else:
         with connection:
-            connection.execute(REGISTER_USER, (uuid, password, company, macid))
-            return check_if_user_exists(connection, uuid, password, company)
+            connection.execute(REGISTER_USER, (company, uuid, password, macid))
+            return check_if_user_exists(connection=connection, uuid=uuid, password=password, company=company)
 
 
 def check_if_company_exists(connection, company):
